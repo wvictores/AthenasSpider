@@ -1,0 +1,55 @@
+﻿
+@model IEnumerable<AthenasSpider.Models.ProductModel>
+@{
+    ViewBag.Title = "Index";
+
+
+}
+
+<h2>@ViewData[ "Products"]</h2>
+@foreach (var product in Model)
+{
+    <div class="col-md-3 col-sm-6">
+        <div class="thumbnail">
+            <img src="/Content/Images/AdoptedHuman.jpg">
+            <h4>@product.Item</h4>
+
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+            <hr class="line">
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    <p class="price">@product.Price</p>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <a href="http://cookingfoodsworld.blogspot.in/" target="_blank">	<button class="btn btn-info right"> More Details</button></a>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+}
+  <!-- BEGIN PRODUCTS -->
+<div class="col-md-3 col-sm-6">
+    <div class="thumbnail">
+        <img src="/Content/Images/Spoiled Rotten.jpg">
+        <h4>@Html.DisplayNameFor(model => model.Item)</h4>
+        <h1>@Html.DisplayNameFor(m => m.ItemId)</h1>
+
+        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. </p>
+        <hr class="line">
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                <p class="price">@Html.DisplayNameFor(m => m.Price)</p>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <button class="btn btn-info right"> More Details</button>
+                <a href="..." target="_blank">	</a>
+               
+            </div>
+
+        </div>
+    </div>
+</div>
