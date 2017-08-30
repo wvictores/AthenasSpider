@@ -1,7 +1,14 @@
-﻿body {
+﻿.title {
+    font-family: timesOldAttic;
+    color: rgb(248, 239, 201);
+    font-size: 5em;
+}
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
+
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
@@ -21,4 +28,71 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+@font-face {
+    font-family: timesOldAttic;
+    src: url('/fonts/Times Old Attic.TTF')
+    ;
+}
+
+@font-face {
+    font-family: Libre Baskerville Italic;
+    src: url('/fonts/LibreBaskerville-Italic.otf');
+}
+
+
+body {
+    background-image: url("Images/silk640.jpg")
+   
+}
+
+.card-footer {
+    background-color: rgba(120, 105, 21, 0.3);
+}
+.card-block {
+    background-color: rgba(248, 239, 201, 0.2);
+}
+
+.jumbotron {
+    background: rgba(0, 0, 0, 0.90 );
+    text-decoration-color: rgb(248, 239, 201)
+}
+
+@media (min-width: 544px) {
+    .card-group {
+        display: flex;
+        width: 100%;
+    }
+
+        .card-group .card {
+            display: flex;
+            flex: 1 1 auto;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+    .card-block {
+        flex: 1 1 auto;
+    }
+}
+
+.libre {
+    font-family: 'Libre Baskerville Italic';
+    color: rgb(248, 239, 201)
+}
+
+.btn-outline-light {
+    color: rgb(248, 239, 201);
+    border-color: rgb(248, 239, 201);
+
+}
+
+    .btn-outline-light:hover {
+        background-color: rgb(248, 239, 201);
+        color: black;
+    }
+
+.jumbotron {
+    padding: 0.9em 1em;
 }
