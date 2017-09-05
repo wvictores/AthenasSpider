@@ -8,5 +8,7 @@ Post-Deployment Script Template
  Example:      :setvar TableName MyTable							
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
-*/INSERT INTO Product (Name, Price) VALUES ('Denim Pants', 59.99);
-INSERT INTO Product (Name, Price) VALUES ('T-Shirt', 19.99);
+*/
+
+--INSERT INTO Product (Name, Price) VALUES ('Denim Pants', 59.99);
+--INSERT INTO Product (Name, Price) VALUES ('T-Shirt', 19.99);

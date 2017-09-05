@@ -1,0 +1,9 @@
+﻿CREATE TABLE [dbo].[ProdVariant]
+(
+	[VarId] INT IDENTITY (1,1) NOT NULL PRIMARY KEY, 
+    [ItemId] INT NOT NULL FOREIGN KEY REFERENCES Products (ItemId), 
+    [Type] VARCHAR(10) NOT NULL, 
+    [Size] VARCHAR(10) NOT NULL, 
+    [Color] VARCHAR(20) NOT NULL
+
+)
