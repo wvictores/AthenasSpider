@@ -49,4 +49,46 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="POId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="18678e1e-055e-4404-9996-67fc5110f639" ChangeDateTime="09/05/2017 21:11:37">
+    <Property Name="ElementName" Value="[dbo].[Shipments].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Shipments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ShipId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b6e348bc-fdff-4122-8403-db878a0d05de" ChangeDateTime="09/05/2017 21:13:38">
+    <Property Name="ElementName" Value="[dbo].[Shipments].[Ord]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Shipments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="baa401bb-19a5-4c0e-ac51-39beed023483" ChangeDateTime="09/05/2017 21:15:40">
+    <Property Name="ElementName" Value="[dbo].[Shipments].[TrackingId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Shipments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Tracking" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="67134c4a-6d85-4d22-a3d1-b5cfd2471d7e" ChangeDateTime="09/05/2017 21:16:17">
+    <Property Name="ElementName" Value="[dbo].[Shipments].[Tracking]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Shipments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TrackingNum" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1051f017-75eb-479e-8041-f2e47ff6ff20" ChangeDateTime="09/05/2017 21:17:11">
+    <Property Name="ElementName" Value="[dbo].[Shipments].[varchar(50)]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Shipments]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ShippingAddressLine2" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f74f7249-4d10-4584-81d7-2f0f79d528c1" ChangeDateTime="09/05/2017 21:19:53">
+    <Property Name="ElementName" Value="[dbo].[Table1].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Table1]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="BespokeId" />
+  </Operation>
 </Operations>

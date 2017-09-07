@@ -12,27 +12,34 @@ namespace AthenasSpider.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Product
+    public partial class Order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Product()
+        public Order()
         {
             this.BespokeOrders = new HashSet<BespokeOrder>();
             this.ProdOrders = new HashSet<ProdOrder>();
-            this.ProdVariants = new HashSet<ProdVariant>();
+            this.Shipments = new HashSet<Shipment>();
         }
     
-        public int ItemId { get; set; }
-        public string ItemName { get; set; }
-        public string Description { get; set; }
-        public decimal Price { get; set; }
-        public string Image { get; set; }
+        public int OId { get; set; }
+        public Nullable<int> CId { get; set; }
+        public string ShipAddressLine1 { get; set; }
+        public string ShipAddressLine2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string ZipCode { get; set; }
+        public decimal ShipFee { get; set; }
+        public Nullable<decimal> Tax { get; set; }
+        public System.Guid Name { get; set; }
+        public bool Completed { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BespokeOrder> BespokeOrders { get; set; }
+        public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProdOrder> ProdOrders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProdVariant> ProdVariants { get; set; }
+        public virtual ICollection<Shipment> Shipments { get; set; }
     }
 }

@@ -12,27 +12,26 @@ namespace AthenasSpider.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Product
+    public partial class Customer
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Product()
+        public Customer()
         {
             this.BespokeOrders = new HashSet<BespokeOrder>();
-            this.ProdOrders = new HashSet<ProdOrder>();
-            this.ProdVariants = new HashSet<ProdVariant>();
+            this.Orders = new HashSet<Order>();
+            this.Shipments = new HashSet<Shipment>();
         }
     
-        public int ItemId { get; set; }
-        public string ItemName { get; set; }
-        public string Description { get; set; }
-        public decimal Price { get; set; }
-        public string Image { get; set; }
+        public int CID { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string E_mail { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BespokeOrder> BespokeOrders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProdOrder> ProdOrders { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProdVariant> ProdVariants { get; set; }
+        public virtual ICollection<Shipment> Shipments { get; set; }
     }
 }

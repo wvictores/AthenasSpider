@@ -67,6 +67,7 @@
     <Build Include="dbo\Tables\Orders.sql" />
     <Build Include="dbo\Tables\ProdOrder.sql" />
     <Build Include="dbo\Tables\Shipments.sql" />
+    <Build Include="dbo\Tables\BespokeOrders.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment1.sql" />

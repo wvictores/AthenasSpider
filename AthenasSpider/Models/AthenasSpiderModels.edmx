@@ -1,0 +1,651 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AthenasSpiderDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BespokeOrders">
+          <Key>
+            <PropertyRef Name="BespokeId" />
+          </Key>
+          <Property Name="BespokeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CId" Type="int" Nullable="false" />
+          <Property Name="OId" Type="int" />
+          <Property Name="ItemId" Type="int" />
+          <Property Name="VarId" Type="int" />
+          <Property Name="DueDate" Type="date" Nullable="false" />
+          <Property Name="Price" Type="money" />
+          <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="CID" />
+          </Key>
+          <Property Name="CID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" />
+          <Property Name="E-mail" Type="nvarchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="OId" />
+          </Key>
+          <Property Name="OId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CId" Type="int" />
+          <Property Name="ShipAddressLine1" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ShipAddressLine2" Type="varchar" MaxLength="50" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
+          <Property Name="State" Type="nchar" MaxLength="2" />
+          <Property Name="ZipCode" Type="nchar" MaxLength="5" />
+          <Property Name="ShipFee" Type="money" Nullable="false" />
+          <Property Name="Tax" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="Name" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Completed" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProdOrder">
+          <Key>
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="OId" />
+          </Key>
+          <Property Name="ItemID" Type="int" Nullable="false" />
+          <Property Name="VarID" Type="int" Nullable="false" />
+          <Property Name="OId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Description" Type="ntext" />
+          <Property Name="Price" Type="money" Nullable="false" />
+          <Property Name="Image" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="ProdVariant">
+          <Key>
+            <PropertyRef Name="VarId" />
+          </Key>
+          <Property Name="VarId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemId" Type="int" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Size" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Color" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Shipments">
+          <Key>
+            <PropertyRef Name="ShipId" />
+          </Key>
+          <Property Name="ShipId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CId" Type="int" Nullable="false" />
+          <Property Name="OId" Type="int" Nullable="false" />
+          <Property Name="TrackingNum" Type="varchar" MaxLength="50" />
+          <Property Name="ShippingAddressLine1" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ShippingAddressLine2" Type="varchar" MaxLength="50" />
+          <Property Name="City" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="State" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="ZipCode" Type="nchar" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__BespokeOr__ItemI__32E0915F">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="BespokeOrders" Type="Self.BespokeOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="BespokeOrders">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BespokeOrde__CId__30F848ED">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="BespokeOrders" Type="Self.BespokeOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CID" />
+            </Principal>
+            <Dependent Role="BespokeOrders">
+              <PropertyRef Name="CId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BespokeOrde__OId__31EC6D26">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="0..1" />
+          <End Role="BespokeOrders" Type="Self.BespokeOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OId" />
+            </Principal>
+            <Dependent Role="BespokeOrders">
+              <PropertyRef Name="OId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__CId__3E52440B">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="CId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProdOrder__ItemI__34C8D9D1">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProdOrder" Type="Self.ProdOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ProdOrder">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProdOrder__OId__36B12243">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="ProdOrder" Type="Self.ProdOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OId" />
+            </Principal>
+            <Dependent Role="ProdOrder">
+              <PropertyRef Name="OId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProdOrder__VarID__35BCFE0A">
+          <End Role="ProdVariant" Type="Self.ProdVariant" Multiplicity="1" />
+          <End Role="ProdOrder" Type="Self.ProdOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProdVariant">
+              <PropertyRef Name="VarId" />
+            </Principal>
+            <Dependent Role="ProdOrder">
+              <PropertyRef Name="VarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProdVaria__ItemI__37A5467C">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProdVariant" Type="Self.ProdVariant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ProdVariant">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Shipments__CId__38996AB5">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="Shipments" Type="Self.Shipments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CID" />
+            </Principal>
+            <Dependent Role="Shipments">
+              <PropertyRef Name="CId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Shipments__OId__398D8EEE">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="Shipments" Type="Self.Shipments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OId" />
+            </Principal>
+            <Dependent Role="Shipments">
+              <PropertyRef Name="OId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AthenasSpiderDBModelStoreContainer">
+          <EntitySet Name="BespokeOrders" EntityType="Self.BespokeOrders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProdOrder" EntityType="Self.ProdOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProdVariant" EntityType="Self.ProdVariant" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Shipments" EntityType="Self.Shipments" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__BespokeOr__ItemI__32E0915F" Association="Self.FK__BespokeOr__ItemI__32E0915F">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="BespokeOrders" EntitySet="BespokeOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BespokeOrde__CId__30F848ED" Association="Self.FK__BespokeOrde__CId__30F848ED">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="BespokeOrders" EntitySet="BespokeOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BespokeOrde__OId__31EC6D26" Association="Self.FK__BespokeOrde__OId__31EC6D26">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="BespokeOrders" EntitySet="BespokeOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__CId__3E52440B" Association="Self.FK__Orders__CId__3E52440B">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProdOrder__ItemI__34C8D9D1" Association="Self.FK__ProdOrder__ItemI__34C8D9D1">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProdOrder" EntitySet="ProdOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProdOrder__OId__36B12243" Association="Self.FK__ProdOrder__OId__36B12243">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="ProdOrder" EntitySet="ProdOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProdOrder__VarID__35BCFE0A" Association="Self.FK__ProdOrder__VarID__35BCFE0A">
+            <End Role="ProdVariant" EntitySet="ProdVariant" />
+            <End Role="ProdOrder" EntitySet="ProdOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProdVaria__ItemI__37A5467C" Association="Self.FK__ProdVaria__ItemI__37A5467C">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProdVariant" EntitySet="ProdVariant" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Shipments__CId__38996AB5" Association="Self.FK__Shipments__CId__38996AB5">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Shipments" EntitySet="Shipments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Shipments__OId__398D8EEE" Association="Self.FK__Shipments__OId__398D8EEE">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="Shipments" EntitySet="Shipments" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AthenasSpiderDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AthenasSpiderDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BespokeOrders" EntityType="AthenasSpiderDBModel.BespokeOrder" />
+          <EntitySet Name="Customers" EntityType="AthenasSpiderDBModel.Customer" />
+          <EntitySet Name="Orders" EntityType="AthenasSpiderDBModel.Order" />
+          <EntitySet Name="ProdOrders" EntityType="AthenasSpiderDBModel.ProdOrder" />
+          <EntitySet Name="Products" EntityType="AthenasSpiderDBModel.Product" />
+          <EntitySet Name="ProdVariants" EntityType="AthenasSpiderDBModel.ProdVariant" />
+          <EntitySet Name="Shipments" EntityType="AthenasSpiderDBModel.Shipment" />
+          <AssociationSet Name="FK__BespokeOr__ItemI__32E0915F" Association="AthenasSpiderDBModel.FK__BespokeOr__ItemI__32E0915F">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="BespokeOrder" EntitySet="BespokeOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BespokeOrde__CId__30F848ED" Association="AthenasSpiderDBModel.FK__BespokeOrde__CId__30F848ED">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="BespokeOrder" EntitySet="BespokeOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BespokeOrde__OId__31EC6D26" Association="AthenasSpiderDBModel.FK__BespokeOrde__OId__31EC6D26">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="BespokeOrder" EntitySet="BespokeOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__CId__3E52440B" Association="AthenasSpiderDBModel.FK__Orders__CId__3E52440B">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Shipments__CId__38996AB5" Association="AthenasSpiderDBModel.FK__Shipments__CId__38996AB5">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Shipment" EntitySet="Shipments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProdOrder__OId__36B12243" Association="AthenasSpiderDBModel.FK__ProdOrder__OId__36B12243">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="ProdOrder" EntitySet="ProdOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Shipments__OId__398D8EEE" Association="AthenasSpiderDBModel.FK__Shipments__OId__398D8EEE">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="Shipment" EntitySet="Shipments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProdOrder__ItemI__34C8D9D1" Association="AthenasSpiderDBModel.FK__ProdOrder__ItemI__34C8D9D1">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProdOrder" EntitySet="ProdOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProdOrder__VarID__35BCFE0A" Association="AthenasSpiderDBModel.FK__ProdOrder__VarID__35BCFE0A">
+            <End Role="ProdVariant" EntitySet="ProdVariants" />
+            <End Role="ProdOrder" EntitySet="ProdOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ProdVaria__ItemI__37A5467C" Association="AthenasSpiderDBModel.FK__ProdVaria__ItemI__37A5467C">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProdVariant" EntitySet="ProdVariants" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="BespokeOrder">
+          <Key>
+            <PropertyRef Name="BespokeId" />
+          </Key>
+          <Property Name="BespokeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CId" Type="Int32" Nullable="false" />
+          <Property Name="OId" Type="Int32" />
+          <Property Name="ItemId" Type="Int32" />
+          <Property Name="VarId" Type="Int32" />
+          <Property Name="DueDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Product" Relationship="AthenasSpiderDBModel.FK__BespokeOr__ItemI__32E0915F" FromRole="BespokeOrder" ToRole="Product" />
+          <NavigationProperty Name="Customer" Relationship="AthenasSpiderDBModel.FK__BespokeOrde__CId__30F848ED" FromRole="BespokeOrder" ToRole="Customer" />
+          <NavigationProperty Name="Order" Relationship="AthenasSpiderDBModel.FK__BespokeOrde__OId__31EC6D26" FromRole="BespokeOrder" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CID" />
+          </Key>
+          <Property Name="CID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="E_mail" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BespokeOrders" Relationship="AthenasSpiderDBModel.FK__BespokeOrde__CId__30F848ED" FromRole="Customer" ToRole="BespokeOrder" />
+          <NavigationProperty Name="Orders" Relationship="AthenasSpiderDBModel.FK__Orders__CId__3E52440B" FromRole="Customer" ToRole="Order" />
+          <NavigationProperty Name="Shipments" Relationship="AthenasSpiderDBModel.FK__Shipments__CId__38996AB5" FromRole="Customer" ToRole="Shipment" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OId" />
+          </Key>
+          <Property Name="OId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CId" Type="Int32" />
+          <Property Name="ShipAddressLine1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ShipAddressLine2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="ZipCode" Type="String" MaxLength="5" FixedLength="true" Unicode="true" />
+          <Property Name="ShipFee" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Tax" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="Name" Type="Guid" Nullable="false" />
+          <Property Name="Completed" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="BespokeOrders" Relationship="AthenasSpiderDBModel.FK__BespokeOrde__OId__31EC6D26" FromRole="Order" ToRole="BespokeOrder" />
+          <NavigationProperty Name="Customer" Relationship="AthenasSpiderDBModel.FK__Orders__CId__3E52440B" FromRole="Order" ToRole="Customer" />
+          <NavigationProperty Name="ProdOrders" Relationship="AthenasSpiderDBModel.FK__ProdOrder__OId__36B12243" FromRole="Order" ToRole="ProdOrder" />
+          <NavigationProperty Name="Shipments" Relationship="AthenasSpiderDBModel.FK__Shipments__OId__398D8EEE" FromRole="Order" ToRole="Shipment" />
+        </EntityType>
+        <EntityType Name="ProdOrder">
+          <Key>
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="OId" />
+          </Key>
+          <Property Name="ItemID" Type="Int32" Nullable="false" />
+          <Property Name="VarID" Type="Int32" Nullable="false" />
+          <Property Name="OId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Order" Relationship="AthenasSpiderDBModel.FK__ProdOrder__OId__36B12243" FromRole="ProdOrder" ToRole="Order" />
+          <NavigationProperty Name="Product" Relationship="AthenasSpiderDBModel.FK__ProdOrder__ItemI__34C8D9D1" FromRole="ProdOrder" ToRole="Product" />
+          <NavigationProperty Name="ProdVariant" Relationship="AthenasSpiderDBModel.FK__ProdOrder__VarID__35BCFE0A" FromRole="ProdOrder" ToRole="ProdVariant" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Image" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BespokeOrders" Relationship="AthenasSpiderDBModel.FK__BespokeOr__ItemI__32E0915F" FromRole="Product" ToRole="BespokeOrder" />
+          <NavigationProperty Name="ProdOrders" Relationship="AthenasSpiderDBModel.FK__ProdOrder__ItemI__34C8D9D1" FromRole="Product" ToRole="ProdOrder" />
+          <NavigationProperty Name="ProdVariants" Relationship="AthenasSpiderDBModel.FK__ProdVaria__ItemI__37A5467C" FromRole="Product" ToRole="ProdVariant" />
+        </EntityType>
+        <EntityType Name="ProdVariant">
+          <Key>
+            <PropertyRef Name="VarId" />
+          </Key>
+          <Property Name="VarId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Size" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Color" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ProdOrders" Relationship="AthenasSpiderDBModel.FK__ProdOrder__VarID__35BCFE0A" FromRole="ProdVariant" ToRole="ProdOrder" />
+          <NavigationProperty Name="Product" Relationship="AthenasSpiderDBModel.FK__ProdVaria__ItemI__37A5467C" FromRole="ProdVariant" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Shipment">
+          <Key>
+            <PropertyRef Name="ShipId" />
+          </Key>
+          <Property Name="ShipId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CId" Type="Int32" Nullable="false" />
+          <Property Name="OId" Type="Int32" Nullable="false" />
+          <Property Name="TrackingNum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ShippingAddressLine1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ShippingAddressLine2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="ZipCode" Type="String" Nullable="false" MaxLength="5" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Customer" Relationship="AthenasSpiderDBModel.FK__Shipments__CId__38996AB5" FromRole="Shipment" ToRole="Customer" />
+          <NavigationProperty Name="Order" Relationship="AthenasSpiderDBModel.FK__Shipments__OId__398D8EEE" FromRole="Shipment" ToRole="Order" />
+        </EntityType>
+        <Association Name="FK__BespokeOr__ItemI__32E0915F">
+          <End Type="AthenasSpiderDBModel.Product" Role="Product" Multiplicity="0..1" />
+          <End Type="AthenasSpiderDBModel.BespokeOrder" Role="BespokeOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="BespokeOrder">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BespokeOrde__CId__30F848ED">
+          <End Type="AthenasSpiderDBModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="AthenasSpiderDBModel.BespokeOrder" Role="BespokeOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CID" />
+            </Principal>
+            <Dependent Role="BespokeOrder">
+              <PropertyRef Name="CId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BespokeOrde__OId__31EC6D26">
+          <End Type="AthenasSpiderDBModel.Order" Role="Order" Multiplicity="0..1" />
+          <End Type="AthenasSpiderDBModel.BespokeOrder" Role="BespokeOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OId" />
+            </Principal>
+            <Dependent Role="BespokeOrder">
+              <PropertyRef Name="OId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__CId__3E52440B">
+          <End Type="AthenasSpiderDBModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="AthenasSpiderDBModel.Order" Role="Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CID" />
+            </Principal>
+            <Dependent Role="Order">
+              <PropertyRef Name="CId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Shipments__CId__38996AB5">
+          <End Type="AthenasSpiderDBModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="AthenasSpiderDBModel.Shipment" Role="Shipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CID" />
+            </Principal>
+            <Dependent Role="Shipment">
+              <PropertyRef Name="CId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProdOrder__OId__36B12243">
+          <End Type="AthenasSpiderDBModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="AthenasSpiderDBModel.ProdOrder" Role="ProdOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OId" />
+            </Principal>
+            <Dependent Role="ProdOrder">
+              <PropertyRef Name="OId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Shipments__OId__398D8EEE">
+          <End Type="AthenasSpiderDBModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="AthenasSpiderDBModel.Shipment" Role="Shipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OId" />
+            </Principal>
+            <Dependent Role="Shipment">
+              <PropertyRef Name="OId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProdOrder__ItemI__34C8D9D1">
+          <End Type="AthenasSpiderDBModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="AthenasSpiderDBModel.ProdOrder" Role="ProdOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ProdOrder">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProdOrder__VarID__35BCFE0A">
+          <End Type="AthenasSpiderDBModel.ProdVariant" Role="ProdVariant" Multiplicity="1" />
+          <End Type="AthenasSpiderDBModel.ProdOrder" Role="ProdOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProdVariant">
+              <PropertyRef Name="VarId" />
+            </Principal>
+            <Dependent Role="ProdOrder">
+              <PropertyRef Name="VarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ProdVaria__ItemI__37A5467C">
+          <End Type="AthenasSpiderDBModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="AthenasSpiderDBModel.ProdVariant" Role="ProdVariant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="ProdVariant">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AthenasSpiderDBModelStoreContainer" CdmEntityContainer="AthenasSpiderDBEntities">
+          <EntitySetMapping Name="BespokeOrders">
+            <EntityTypeMapping TypeName="AthenasSpiderDBModel.BespokeOrder">
+              <MappingFragment StoreEntitySet="BespokeOrders">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="VarId" ColumnName="VarId" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="OId" ColumnName="OId" />
+                <ScalarProperty Name="CId" ColumnName="CId" />
+                <ScalarProperty Name="BespokeId" ColumnName="BespokeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="AthenasSpiderDBModel.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="E_mail" ColumnName="E-mail" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="CID" ColumnName="CID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="AthenasSpiderDBModel.Order">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="Completed" ColumnName="Completed" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="ShipFee" ColumnName="ShipFee" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="ShipAddressLine2" ColumnName="ShipAddressLine2" />
+                <ScalarProperty Name="ShipAddressLine1" ColumnName="ShipAddressLine1" />
+                <ScalarProperty Name="CId" ColumnName="CId" />
+                <ScalarProperty Name="OId" ColumnName="OId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProdOrders">
+            <EntityTypeMapping TypeName="AthenasSpiderDBModel.ProdOrder">
+              <MappingFragment StoreEntitySet="ProdOrder">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="OId" ColumnName="OId" />
+                <ScalarProperty Name="VarID" ColumnName="VarID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="AthenasSpiderDBModel.Product">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProdVariants">
+            <EntityTypeMapping TypeName="AthenasSpiderDBModel.ProdVariant">
+              <MappingFragment StoreEntitySet="ProdVariant">
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="VarId" ColumnName="VarId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Shipments">
+            <EntityTypeMapping TypeName="AthenasSpiderDBModel.Shipment">
+              <MappingFragment StoreEntitySet="Shipments">
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="ShippingAddressLine2" ColumnName="ShippingAddressLine2" />
+                <ScalarProperty Name="ShippingAddressLine1" ColumnName="ShippingAddressLine1" />
+                <ScalarProperty Name="TrackingNum" ColumnName="TrackingNum" />
+                <ScalarProperty Name="OId" ColumnName="OId" />
+                <ScalarProperty Name="CId" ColumnName="CId" />
+                <ScalarProperty Name="ShipId" ColumnName="ShipId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

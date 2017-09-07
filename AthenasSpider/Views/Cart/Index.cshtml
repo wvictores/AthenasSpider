@@ -1,0 +1,20 @@
+﻿@model IEnumerable<AthenasSpider.Models.ProdOrder>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<table>
+    @foreach (var item in Model)
+    {
+        <table (@class)="table table-striped">
+            <tr>
+                <td>@item.Product.ItemName</td>
+                <td>@item.Quantity</td>
+                <td>@item.Product.Price</td>
+            </tr>
+            }
+        </table>
+

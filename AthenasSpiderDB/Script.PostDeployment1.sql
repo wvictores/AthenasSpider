@@ -12,3 +12,13 @@ Post-Deployment Script Template
 
 --INSERT INTO Product (Name, Price) VALUES ('Denim Pants', 59.99);
 --INSERT INTO Product (Name, Price) VALUES ('T-Shirt', 19.99);
+
+DELETE FROM Products
+
+GO
+
+INSERT INTO Products (ItemName, Description, Price, Image) VALUES 
+('Dog Collar', 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.', 12, '/Content/Images/Spoiled Rotten.jpg'),
+('Dog Leash', '', 20, '/Content/Images/AdoptedHuman.jpg'),
+('Dog Hat', '', 24, '/Content/Images/FreeKisses.jpg'),
+('Dog Pants', '', 24, '/Content/Images/BadToBone.jpg')
