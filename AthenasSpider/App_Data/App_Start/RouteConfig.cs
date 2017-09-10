@@ -18,6 +18,11 @@ namespace AthenasSpider
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "404",
+                url: "{*url}",
+                defaults: new { controller = "Home", action = "NotFound" });
         }
     }
 }

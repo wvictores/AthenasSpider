@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Register</h2>
+
+
+@if (ViewBag.Errors != null)
+
+{
+
+    foreach (string s in (IEnumerable<string>)ViewBag.Errors)
+
+    {
+
+        <div>Error: @s</div>
+
+    }
+
+}
+<div class="jumbotron">
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "f" }))
+
+    {
+
+        <div class="form-group">
+            <label for="username" class="form-control-label">Username</label>
+            <input name="username" class="form-control" type="text" />
+        </div>
+
+        <div class="form-group">
+            <label for="password" class="form-control-label">Password</label>
+            <input name="password" class="form-control" type="password" />
+        </div>
+
+        <input type="submit" value="Create Account" />
+
+    }
+</div>

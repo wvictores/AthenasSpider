@@ -4,17 +4,35 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
 
-<table>
+<table class="table table-inverse">
     @foreach (var item in Model)
     {
-        <table (@class)="table table-striped">
+        <thead>
             <tr>
-                <td>@item.Product.ItemName</td>
-                <td>@item.Quantity</td>
-                <td>@item.Product.Price</td>
+                <th scope="row">Cart Contents</th>
+                
+<tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Price</th>
             </tr>
-            }
-        </table>
+        </thead>
 
+        <tr>
+            <td>@item.Product.ItemName</td>
+            <td>@item.Quantity</td>
+            <td>@item.Product.Price.ToString("C")</td>
+            <td>
+              @((item.Quantity * (item.Product.Price)).ToString("C"))
+            </td>
+        </tr>
+    }
+    <tfoot>
+        <tr>
+            <td colspan="2"></td>
+            <td>Subtotal:</td>
+            <td>@((Model.Sum(x => x.Quantity * x.Product.Price)).ToString("C"))</td>
+        </tr>
+    </tfoot>
+</table>

@@ -28,6 +28,10 @@ namespace AthenasSpider.Controllers
         // GET: Details
         public ActionResult Details(int? id)
         {
+            if (!id.HasValue)
+            {
+                return HttpNotFound("Product not found");
+            }
             return View(db.Products.Find(id));
         }
 

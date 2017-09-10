@@ -1,0 +1,61 @@
+﻿@using AthenasSpider.Models
+@model Product
+@{
+    ViewBag.Title = "Details";
+    var colors = (new SelectListItem[] { new SelectListItem
+    {
+        Text = "Select a Color",
+        Value =""
+    }}).Union(
+    Model.ProdVariants.Select(x => x.Color).Distinct().Select(x => new SelectListItem
+    {
+        Text = x,
+        Value = x
+    }));
+
+    var sizes = (new SelectListItem[] { new SelectListItem
+    {
+        Text = "Select a Size",
+        Value = ""
+    }}).Union(
+    Model.ProdVariants.Select(x => x.Size).Distinct().Select(x => new SelectListItem
+    {
+        Text = x,
+        Value = x
+    }));
+
+    var quantity = (new int[] { 1, 2, 3, 4, 5, 6, 7, 8,9, 10 }).Select(x => new SelectListItem
+    {
+        Text = x.ToString(),
+        Value = x.ToString()
+    });
+}
+
+<div class="row">
+    <div class="col-xs-12 col-sm-4">
+        <img src="@Model.Image" alt="@Model.ItemName" class="img-responsive" />
+    </div>
+    <div class="col-xs-12 col-sm-8">
+        <div class="panel panel-default">
+            <div class="panel-heading">@Model.ItemName</div>
+            <div class="panel-body">
+                <p>@Model.Description</p>
+                <h3>@Model.Price.ToString("c")</h3>
+                    @using (Html.BeginForm("Details", "Product", FormMethod.Post, new { @class = "form-inline" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.ItemId)
+                        @Html.DropDownList("color", colors, new { @class = "form-control", required = "required" })
+                        @Html.DropDownList("size", sizes, new { @class = "form-control", required = "required" })
+
+                        @Html.DropDownList("quantity", quantity, new { @class = "form-control" })
+                        <input type="submit" class="btn btn-default" />
+                    }
+            </div>
+        </div>
+        
+
+        
+        
+    </div>
+</div>

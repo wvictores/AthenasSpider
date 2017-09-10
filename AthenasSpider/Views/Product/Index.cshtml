@@ -16,6 +16,7 @@
             <div class="card-block">
                 <h4 class="card-title">@product.ItemName</h4>
                 <p class="card-text">@product.Description</p>
+                @Html.ActionLink("View", "Details", "Product", new { id = product.ItemId }, new { @class = "btn btn-default " })
                 @using (Html.BeginForm("Details", "Product", FormMethod.Post, new { @class = "form" }))
                 {
                     <input type="hidden" name="id" value="@product.ItemId" />
