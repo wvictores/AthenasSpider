@@ -4,10 +4,6 @@
     font-size: 5em;
 }
 
-body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
 
 
 /* Set padding to keep content from hitting the edges */
@@ -96,4 +92,11 @@ body {
 .jumbotron {
     padding: 0.9em 1em;
 
+}
+.navbar navbar-inverse {
+    background-color: black
+}
+.navbar navbar-inverse {
+    font-family: 'Libre Baskerville Italic';
+    color: rgb(248, 239, 201)
 }

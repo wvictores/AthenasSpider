@@ -5,6 +5,57 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="AthenasSpiderDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
         <EntityType Name="BespokeOrders">
           <Key>
             <PropertyRef Name="BespokeId" />
@@ -25,7 +76,8 @@
           <Property Name="CID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FirstName" Type="varchar" MaxLength="50" />
           <Property Name="LastName" Type="varchar" MaxLength="50" />
-          <Property Name="E-mail" Type="nvarchar" MaxLength="30" />
+          <Property Name="AspNetUserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="YearOfBirth" Type="int" />
         </EntityType>
         <EntityType Name="Orders">
           <Key>
@@ -45,10 +97,9 @@
         </EntityType>
         <EntityType Name="ProdOrder">
           <Key>
-            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="VarID" />
             <PropertyRef Name="OId" />
           </Key>
-          <Property Name="ItemID" Type="int" Nullable="false" />
           <Property Name="VarID" Type="int" Nullable="false" />
           <Property Name="OId" Type="int" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
@@ -135,19 +186,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProdOrder__ItemI__34C8D9D1">
-          <End Role="Products" Type="Self.Products" Multiplicity="1" />
-          <End Role="ProdOrder" Type="Self.ProdOrder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Products">
-              <PropertyRef Name="ItemId" />
-            </Principal>
-            <Dependent Role="ProdOrder">
-              <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ProdOrder__OId__36B12243">
+        <Association Name="FK__ProdOrder__OId__5EBF139D">
           <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
           <End Role="ProdOrder" Type="Self.ProdOrder" Multiplicity="*" />
           <ReferentialConstraint>
@@ -159,7 +198,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProdOrder__VarID__35BCFE0A">
+        <Association Name="FK__ProdOrder__VarID__5DCAEF64">
           <End Role="ProdVariant" Type="Self.ProdVariant" Multiplicity="1" />
           <End Role="ProdOrder" Type="Self.ProdOrder" Multiplicity="*" />
           <ReferentialConstraint>
@@ -207,7 +246,80 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Customers_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="AspNetUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="AthenasSpiderDBModelStoreContainer">
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BespokeOrders" EntityType="Self.BespokeOrders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
@@ -231,15 +343,11 @@
             <End Role="Customers" EntitySet="Customers" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProdOrder__ItemI__34C8D9D1" Association="Self.FK__ProdOrder__ItemI__34C8D9D1">
-            <End Role="Products" EntitySet="Products" />
-            <End Role="ProdOrder" EntitySet="ProdOrder" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ProdOrder__OId__36B12243" Association="Self.FK__ProdOrder__OId__36B12243">
+          <AssociationSet Name="FK__ProdOrder__OId__5EBF139D" Association="Self.FK__ProdOrder__OId__5EBF139D">
             <End Role="Orders" EntitySet="Orders" />
             <End Role="ProdOrder" EntitySet="ProdOrder" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProdOrder__VarID__35BCFE0A" Association="Self.FK__ProdOrder__VarID__35BCFE0A">
+          <AssociationSet Name="FK__ProdOrder__VarID__5DCAEF64" Association="Self.FK__ProdOrder__VarID__5DCAEF64">
             <End Role="ProdVariant" EntitySet="ProdVariant" />
             <End Role="ProdOrder" EntitySet="ProdOrder" />
           </AssociationSet>
@@ -255,12 +363,36 @@
             <End Role="Orders" EntitySet="Orders" />
             <End Role="Shipments" EntitySet="Shipments" />
           </AssociationSet>
+          <AssociationSet Name="FK_Customers_AspNetUsers" Association="Self.FK_Customers_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Customers" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AthenasSpiderDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="AthenasSpiderDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AspNetRoles" EntityType="AthenasSpiderDBModel.AspNetRole" />
+          <EntitySet Name="AspNetUserClaims" EntityType="AthenasSpiderDBModel.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="AthenasSpiderDBModel.AspNetUserLogin" />
+          <EntitySet Name="AspNetUsers" EntityType="AthenasSpiderDBModel.AspNetUser" />
           <EntitySet Name="BespokeOrders" EntityType="AthenasSpiderDBModel.BespokeOrder" />
           <EntitySet Name="Customers" EntityType="AthenasSpiderDBModel.Customer" />
           <EntitySet Name="Orders" EntityType="AthenasSpiderDBModel.Order" />
@@ -268,6 +400,18 @@
           <EntitySet Name="Products" EntityType="AthenasSpiderDBModel.Product" />
           <EntitySet Name="ProdVariants" EntityType="AthenasSpiderDBModel.ProdVariant" />
           <EntitySet Name="Shipments" EntityType="AthenasSpiderDBModel.Shipment" />
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="AthenasSpiderDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaim" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="AthenasSpiderDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customers_AspNetUsers" Association="AthenasSpiderDBModel.FK_Customers_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
           <AssociationSet Name="FK__BespokeOr__ItemI__32E0915F" Association="AthenasSpiderDBModel.FK__BespokeOr__ItemI__32E0915F">
             <End Role="Product" EntitySet="Products" />
             <End Role="BespokeOrder" EntitySet="BespokeOrders" />
@@ -288,7 +432,7 @@
             <End Role="Customer" EntitySet="Customers" />
             <End Role="Shipment" EntitySet="Shipments" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProdOrder__OId__36B12243" Association="AthenasSpiderDBModel.FK__ProdOrder__OId__36B12243">
+          <AssociationSet Name="FK__ProdOrder__OId__5EBF139D" Association="AthenasSpiderDBModel.FK__ProdOrder__OId__5EBF139D">
             <End Role="Order" EntitySet="Orders" />
             <End Role="ProdOrder" EntitySet="ProdOrders" />
           </AssociationSet>
@@ -296,11 +440,7 @@
             <End Role="Order" EntitySet="Orders" />
             <End Role="Shipment" EntitySet="Shipments" />
           </AssociationSet>
-          <AssociationSet Name="FK__ProdOrder__ItemI__34C8D9D1" Association="AthenasSpiderDBModel.FK__ProdOrder__ItemI__34C8D9D1">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="ProdOrder" EntitySet="ProdOrders" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ProdOrder__VarID__35BCFE0A" Association="AthenasSpiderDBModel.FK__ProdOrder__VarID__35BCFE0A">
+          <AssociationSet Name="FK__ProdOrder__VarID__5DCAEF64" Association="AthenasSpiderDBModel.FK__ProdOrder__VarID__5DCAEF64">
             <End Role="ProdVariant" EntitySet="ProdVariants" />
             <End Role="ProdOrder" EntitySet="ProdOrders" />
           </AssociationSet>
@@ -308,7 +448,61 @@
             <End Role="Product" EntitySet="Products" />
             <End Role="ProdVariant" EntitySet="ProdVariants" />
           </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="AthenasSpiderDBModel.AspNetUserRoles">
+            <End Role="AspNetRole" EntitySet="AspNetRoles" />
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUsers" Relationship="AthenasSpiderDBModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="AthenasSpiderDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaim" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="AthenasSpiderDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogin" ToRole="AspNetUser" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="AthenasSpiderDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="AthenasSpiderDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
+          <NavigationProperty Name="Customers" Relationship="AthenasSpiderDBModel.FK_Customers_AspNetUsers" FromRole="AspNetUser" ToRole="Customer" />
+          <NavigationProperty Name="AspNetRoles" Relationship="AthenasSpiderDBModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+        </EntityType>
         <EntityType Name="BespokeOrder">
           <Key>
             <PropertyRef Name="BespokeId" />
@@ -332,7 +526,9 @@
           <Property Name="CID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="E_mail" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="YearOfBirth" Type="Int32" />
+          <NavigationProperty Name="AspNetUser" Relationship="AthenasSpiderDBModel.FK_Customers_AspNetUsers" FromRole="Customer" ToRole="AspNetUser" />
           <NavigationProperty Name="BespokeOrders" Relationship="AthenasSpiderDBModel.FK__BespokeOrde__CId__30F848ED" FromRole="Customer" ToRole="BespokeOrder" />
           <NavigationProperty Name="Orders" Relationship="AthenasSpiderDBModel.FK__Orders__CId__3E52440B" FromRole="Customer" ToRole="Order" />
           <NavigationProperty Name="Shipments" Relationship="AthenasSpiderDBModel.FK__Shipments__CId__38996AB5" FromRole="Customer" ToRole="Shipment" />
@@ -354,21 +550,19 @@
           <Property Name="Completed" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="BespokeOrders" Relationship="AthenasSpiderDBModel.FK__BespokeOrde__OId__31EC6D26" FromRole="Order" ToRole="BespokeOrder" />
           <NavigationProperty Name="Customer" Relationship="AthenasSpiderDBModel.FK__Orders__CId__3E52440B" FromRole="Order" ToRole="Customer" />
-          <NavigationProperty Name="ProdOrders" Relationship="AthenasSpiderDBModel.FK__ProdOrder__OId__36B12243" FromRole="Order" ToRole="ProdOrder" />
+          <NavigationProperty Name="ProdOrders" Relationship="AthenasSpiderDBModel.FK__ProdOrder__OId__5EBF139D" FromRole="Order" ToRole="ProdOrder" />
           <NavigationProperty Name="Shipments" Relationship="AthenasSpiderDBModel.FK__Shipments__OId__398D8EEE" FromRole="Order" ToRole="Shipment" />
         </EntityType>
         <EntityType Name="ProdOrder">
           <Key>
-            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="VarID" />
             <PropertyRef Name="OId" />
           </Key>
-          <Property Name="ItemID" Type="Int32" Nullable="false" />
           <Property Name="VarID" Type="Int32" Nullable="false" />
           <Property Name="OId" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Order" Relationship="AthenasSpiderDBModel.FK__ProdOrder__OId__36B12243" FromRole="ProdOrder" ToRole="Order" />
-          <NavigationProperty Name="Product" Relationship="AthenasSpiderDBModel.FK__ProdOrder__ItemI__34C8D9D1" FromRole="ProdOrder" ToRole="Product" />
-          <NavigationProperty Name="ProdVariant" Relationship="AthenasSpiderDBModel.FK__ProdOrder__VarID__35BCFE0A" FromRole="ProdOrder" ToRole="ProdVariant" />
+          <NavigationProperty Name="Order" Relationship="AthenasSpiderDBModel.FK__ProdOrder__OId__5EBF139D" FromRole="ProdOrder" ToRole="Order" />
+          <NavigationProperty Name="ProdVariant" Relationship="AthenasSpiderDBModel.FK__ProdOrder__VarID__5DCAEF64" FromRole="ProdOrder" ToRole="ProdVariant" />
         </EntityType>
         <EntityType Name="Product">
           <Key>
@@ -380,7 +574,6 @@
           <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="Image" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="BespokeOrders" Relationship="AthenasSpiderDBModel.FK__BespokeOr__ItemI__32E0915F" FromRole="Product" ToRole="BespokeOrder" />
-          <NavigationProperty Name="ProdOrders" Relationship="AthenasSpiderDBModel.FK__ProdOrder__ItemI__34C8D9D1" FromRole="Product" ToRole="ProdOrder" />
           <NavigationProperty Name="ProdVariants" Relationship="AthenasSpiderDBModel.FK__ProdVaria__ItemI__37A5467C" FromRole="Product" ToRole="ProdVariant" />
         </EntityType>
         <EntityType Name="ProdVariant">
@@ -392,7 +585,7 @@
           <Property Name="Type" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Size" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="Color" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ProdOrders" Relationship="AthenasSpiderDBModel.FK__ProdOrder__VarID__35BCFE0A" FromRole="ProdVariant" ToRole="ProdOrder" />
+          <NavigationProperty Name="ProdOrders" Relationship="AthenasSpiderDBModel.FK__ProdOrder__VarID__5DCAEF64" FromRole="ProdVariant" ToRole="ProdOrder" />
           <NavigationProperty Name="Product" Relationship="AthenasSpiderDBModel.FK__ProdVaria__ItemI__37A5467C" FromRole="ProdVariant" ToRole="Product" />
         </EntityType>
         <EntityType Name="Shipment">
@@ -411,6 +604,46 @@
           <NavigationProperty Name="Customer" Relationship="AthenasSpiderDBModel.FK__Shipments__CId__38996AB5" FromRole="Shipment" ToRole="Customer" />
           <NavigationProperty Name="Order" Relationship="AthenasSpiderDBModel.FK__Shipments__OId__398D8EEE" FromRole="Shipment" ToRole="Order" />
         </EntityType>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Type="AthenasSpiderDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AthenasSpiderDBModel.AspNetUserClaim" Role="AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaim">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Type="AthenasSpiderDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="AthenasSpiderDBModel.AspNetUserLogin" Role="AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customers_AspNetUsers">
+          <End Type="AthenasSpiderDBModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="AthenasSpiderDBModel.Customer" Role="Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="AspNetUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__BespokeOr__ItemI__32E0915F">
           <End Type="AthenasSpiderDBModel.Product" Role="Product" Multiplicity="0..1" />
           <End Type="AthenasSpiderDBModel.BespokeOrder" Role="BespokeOrder" Multiplicity="*" />
@@ -471,7 +704,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProdOrder__OId__36B12243">
+        <Association Name="FK__ProdOrder__OId__5EBF139D">
           <End Type="AthenasSpiderDBModel.Order" Role="Order" Multiplicity="1" />
           <End Type="AthenasSpiderDBModel.ProdOrder" Role="ProdOrder" Multiplicity="*" />
           <ReferentialConstraint>
@@ -495,19 +728,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ProdOrder__ItemI__34C8D9D1">
-          <End Type="AthenasSpiderDBModel.Product" Role="Product" Multiplicity="1" />
-          <End Type="AthenasSpiderDBModel.ProdOrder" Role="ProdOrder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="ItemId" />
-            </Principal>
-            <Dependent Role="ProdOrder">
-              <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ProdOrder__VarID__35BCFE0A">
+        <Association Name="FK__ProdOrder__VarID__5DCAEF64">
           <End Type="AthenasSpiderDBModel.ProdVariant" Role="ProdVariant" Multiplicity="1" />
           <End Type="AthenasSpiderDBModel.ProdOrder" Role="ProdOrder" Multiplicity="*" />
           <ReferentialConstraint>
@@ -531,12 +752,61 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <Association Name="AspNetUserRoles">
+          <End Type="AthenasSpiderDBModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
+          <End Type="AthenasSpiderDBModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="AthenasSpiderDBModelStoreContainer" CdmEntityContainer="AthenasSpiderDBEntities">
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="AthenasSpiderDBModel.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="AthenasSpiderDBModel.AspNetUserClaim">
+              <MappingFragment StoreEntitySet="AspNetUserClaims">
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserLogins">
+            <EntityTypeMapping TypeName="AthenasSpiderDBModel.AspNetUserLogin">
+              <MappingFragment StoreEntitySet="AspNetUserLogins">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="AthenasSpiderDBModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="BespokeOrders">
             <EntityTypeMapping TypeName="AthenasSpiderDBModel.BespokeOrder">
               <MappingFragment StoreEntitySet="BespokeOrders">
@@ -554,7 +824,8 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="AthenasSpiderDBModel.Customer">
               <MappingFragment StoreEntitySet="Customers">
-                <ScalarProperty Name="E_mail" ColumnName="E-mail" />
+                <ScalarProperty Name="YearOfBirth" ColumnName="YearOfBirth" />
+                <ScalarProperty Name="AspNetUserId" ColumnName="AspNetUserId" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="CID" ColumnName="CID" />
@@ -584,7 +855,6 @@
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="OId" ColumnName="OId" />
                 <ScalarProperty Name="VarID" ColumnName="VarID" />
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -625,6 +895,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="AthenasSpiderDBModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetUser">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="AspNetRole">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

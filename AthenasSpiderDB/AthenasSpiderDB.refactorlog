@@ -91,4 +91,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="BespokeId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="2b9afb7e-00ad-4823-8d83-536428df1c3d" ChangeDateTime="09/11/2017 20:20:48">
+    <Property Name="ElementName" Value="[dbo].[Customers].[YearOfBirth]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Customers]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Int" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e616de3e-f8e0-4077-a234-90567b7088b9" ChangeDateTime="09/11/2017 20:20:55">
+    <Property Name="ElementName" Value="[dbo].[Customers].[Int]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Customers]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="YearOfBirth" />
+  </Operation>
 </Operations>

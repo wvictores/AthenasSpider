@@ -25,8 +25,10 @@ namespace AthenasSpider.Models
         public int CID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string E_mail { get; set; }
+        public string AspNetUserId { get; set; }
+        public Nullable<int> YearOfBirth { get; set; }
     
+        public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BespokeOrder> BespokeOrders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

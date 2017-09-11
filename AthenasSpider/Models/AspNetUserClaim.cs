@@ -12,13 +12,13 @@ namespace AthenasSpider.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ProdOrder
+    public partial class AspNetUserClaim
     {
-        public int VarID { get; set; }
-        public int OId { get; set; }
-        public int Quantity { get; set; }
+        public int Id { get; set; }
+        public string UserId { get; set; }
+        public string ClaimType { get; set; }
+        public string ClaimValue { get; set; }
     
-        public virtual Order Order { get; set; }
-        public virtual ProdVariant ProdVariant { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
     }
 }

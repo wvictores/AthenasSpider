@@ -68,6 +68,11 @@
     <Build Include="dbo\Tables\ProdOrder.sql" />
     <Build Include="dbo\Tables\Shipments.sql" />
     <Build Include="dbo\Tables\BespokeOrders.sql" />
+    <Build Include="dbo\Tables\AspNetUsers.sql" />
+    <Build Include="dbo\Tables\AspNetUserRoles.sql" />
+    <Build Include="dbo\Tables\AspNetUserLogins.sql" />
+    <Build Include="dbo\Tables\AspNetUserClaims.sql" />
+    <Build Include="dbo\Tables\AspNetRoles.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment1.sql" />

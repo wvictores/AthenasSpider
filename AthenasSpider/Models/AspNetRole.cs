@@ -12,24 +12,18 @@ namespace AthenasSpider.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Product
+    public partial class AspNetRole
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Product()
+        public AspNetRole()
         {
-            this.BespokeOrders = new HashSet<BespokeOrder>();
-            this.ProdVariants = new HashSet<ProdVariant>();
+            this.AspNetUsers = new HashSet<AspNetUser>();
         }
     
-        public int ItemId { get; set; }
-        public string ItemName { get; set; }
-        public string Description { get; set; }
-        public decimal Price { get; set; }
-        public string Image { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BespokeOrder> BespokeOrders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProdVariant> ProdVariants { get; set; }
+        public virtual ICollection<AspNetUser> AspNetUsers { get; set; }
     }
 }

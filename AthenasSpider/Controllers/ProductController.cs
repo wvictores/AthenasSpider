@@ -85,7 +85,7 @@ namespace AthenasSpider.Controllers
                 var prodOrder = order.ProdOrders
                     .FirstOrDefault(x => x.ProdVariant.Color == color
                     && x.ProdVariant.Size == size
-                    && x.Product.ItemId == id);
+                    && x.ProdVariant.ItemId == id);
 
                 //If I haven't added this type of item to the basket already, run this statement:
                 if (prodOrder == null)
@@ -99,7 +99,7 @@ namespace AthenasSpider.Controllers
                         && x.Size == size
                         && x.Color == color);
                     prodOrder.VarID = variant.VarId;
-                    prodOrder.ItemID = variant.ItemId;
+                    prodOrder.ProdVariant.ItemId = variant.ItemId;
                     //Add the new basket line item to the basket.
                     order.ProdOrders.Add(prodOrder);
                 }
