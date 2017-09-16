@@ -20,19 +20,25 @@
         </thead>
 
         <tr>
-            <td>@item.Product.ItemName</td>
+            <td>@item.ProdVariant.Product.ItemName</td>
             <td>@item.Quantity</td>
-            <td>@item.Product.Price.ToString("C")</td>
+            <td>@item.ProdVariant.Product.Price.ToString("C")</td>
             <td>
-              @((item.Quantity * (item.Product.Price)).ToString("C"))
-            </td>
+              @((item.Quantity * (item.ProdVariant.Product.Price)).ToString("C"))
+           </td>
         </tr>
     }
     <tfoot>
         <tr>
             <td colspan="2"></td>
-            <td>Subtotal:</td>
-            <td>@((Model.Sum(x => x.Quantity * x.Product.Price)).ToString("C"))</td>
+            <td>Subtotal:</td>s
+            <td>@((Model.Sum(x => x.Quantity * x.ProdVariant.Product.Price)).ToString("C"))</td>
         </tr>
     </tfoot>
-</table>
+</table
+>@Html.ActionLink("Check Out", "Index", "Checkout", null, new { @class = "btn btn-default" })
+
+
+
+
+

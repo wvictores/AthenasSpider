@@ -9,7 +9,7 @@ namespace AthenasSpider.Controllers
 {
     public class ProductController : Controller
     {
-        Models.AthenasSpiderDBEntities db = new Models.AthenasSpiderDBEntities();
+        AthenasSpiderDBEntities db = new AthenasSpiderDBEntities();
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -99,7 +99,6 @@ namespace AthenasSpider.Controllers
                         && x.Size == size
                         && x.Color == color);
                     prodOrder.VarID = variant.VarId;
-                    prodOrder.ProdVariant.ItemId = variant.ItemId;
                     //Add the new basket line item to the basket.
                     order.ProdOrders.Add(prodOrder);
                 }

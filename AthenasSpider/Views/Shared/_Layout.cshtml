@@ -11,33 +11,36 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand title" href="#">AS</a>
+    <div class="container-fluid ">
+        <nav class="navbar navbar-expand-lg navbar-light bc">
+            <a class="navbar-brand title2" href="#">AS</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                    <li class="nav-item active navfont">
                         @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item navfont">
                         @Html.ActionLink("Products", "Index", "Product",null,  new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item navfont">
+                        @Html.ActionLink("Custom Order", "Create", "Bespoke", null, new { @class = "nav-link" })
                     </li>
 @if (User.Identity.IsAuthenticated)
 {
-                    <li class="nav-item">
+                    <li class="nav-item navfont">
                         @Html.ActionLink("Sign Out as " + User.Identity.Name, "SignOut", "Account",null, new { @class = "nav-link" })
                     </li>
 }
 else
 {
-                    <li class="nav-item">
+                    <li class="nav-item navfont">
                         @Html.ActionLink("Register", "Register", "Account", null, new { @class = "nav-link" })
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item navfont">
                         @Html.ActionLink("Sign In", "SignIn", "Account",null, new { @class = "nav-link" })
                     </li>
                 }

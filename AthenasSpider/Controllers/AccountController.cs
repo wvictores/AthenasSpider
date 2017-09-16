@@ -99,17 +99,19 @@ namespace AthenasSpider.Controllers
             if (ModelState.IsValid)
             {
                 var manager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
-                IdentityUser user = manager.FindByEmail(email);
-                string resetToken = manager.GeneratePasswordResetToken(user.Id);
-                string body = string.Format(
-                    "<a href=\"{0}/account/resetpassword?email={1}&token={2}\">Reset your password</a>",
-                    Request.Url.GetLeftPart(UriPartial.Authority),
-                    email,
-                    resetToken);
+                IdentityUser user = manager.FindByEmail(email) ?? manager.FindByName(email);
+                if(user != null)
+                {
+                    string resetToken = manager.GeneratePasswordResetToken(user.Id);
+                    string body = string.Format(
+                        "<a href=\"{0}/account/resetpassword?email={1}&token={2}\">Reset your password</a>",
+                        Request.Url.GetLeftPart(UriPartial.Authority),
+                        email,
+                        resetToken);
 
-                manager.SendEmail(user.Id, "Reset Your Athena's Spider Password", body);
+                    manager.SendEmail(user.Id, "Reset Your Athena's Spider Password", body);
 
-
+                }
                 return RedirectToAction("ForgotPasswordSent");
             }
             return View();
@@ -181,7 +183,7 @@ namespace AthenasSpider.Controllers
                 AspNetUserId = newUser.Id,
                 FirstName = firstname,
                 LastName = lastname,
-                YearOfBirth = dateofbirth.HasValue ? dateofbirth.Value.Year : (int?) null
+
             });
 
             db.SaveChanges();
@@ -199,8 +201,23 @@ namespace AthenasSpider.Controllers
             manager.SendEmail(newUser.Id, "Confirm Your Athena's Spider Account", body);
 
             return RedirectToAction("SignIn");
-
-
+        }
+        
+        //[HttpPost]
+        //public ActionResult ValidateAddress(string street1, string street2, string city, string state, string zip)
+        //    if (ModelState.IsValid)
+        //{
+        //    string authId = ConfigurationManager.AppSettings["SmartyStreets.AuthID"];
+        //    string authToken = ConfigurationManager.AppSettings["SmartyStreets.AuthToken"];
+        //    SmartyStreets.USStreetApi.ClientBuilder builder = new SmartyStreets.USStreetApi.ClientBuilder(authId, authToken);
+        //    SmartyStreets.USStreetApi.Client client = builder.Build();
+        //    SmartyStreets.USStreetApi.Lookup lookup = new SmartyStreets.USStreetApi.Lookup();
+        //    lookup.City = city;
+        //    lookup.State = state;
+        //    lookup.Street = street1;
+        //    lookup.Street2 = street2;
+        //    lookup.ZipCode = zip;
+        //    client.Send(lookup);
+        //    return Json(lookup.Result);
         }
     }
-}

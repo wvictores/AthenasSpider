@@ -17,9 +17,9 @@ namespace AthenasSpider.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Customer()
         {
-            this.BespokeOrders = new HashSet<BespokeOrder>();
             this.Orders = new HashSet<Order>();
             this.Shipments = new HashSet<Shipment>();
+            this.BespokeOrders = new HashSet<BespokeOrders>();
         }
     
         public int CID { get; set; }
@@ -30,10 +30,10 @@ namespace AthenasSpider.Models
     
         public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BespokeOrder> BespokeOrders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Shipment> Shipments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BespokeOrders> BespokeOrders { get; set; }
     }
 }

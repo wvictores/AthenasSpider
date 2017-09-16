@@ -12,7 +12,7 @@ namespace AthenasSpider.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class BespokeOrder
+    public partial class BespokeOrders
     {
         public int BespokeId { get; set; }
         public int CId { get; set; }
@@ -22,9 +22,11 @@ namespace AthenasSpider.Models
         public System.DateTime DueDate { get; set; }
         public Nullable<decimal> Price { get; set; }
         public string Status { get; set; }
+        public string CustomerImage { get; set; }
+        public string Description { get; set; }
     
-        public virtual Product Product { get; set; }
-        public virtual Customer Customer { get; set; }
-        public virtual Order Order { get; set; }
+        public virtual Product Products { get; set; }
+        public virtual Customer Customers { get; set; }
+        public virtual Order Orders { get; set; }
     }
 }

@@ -17,8 +17,8 @@ namespace AthenasSpider.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Product()
         {
-            this.BespokeOrders = new HashSet<BespokeOrder>();
             this.ProdVariants = new HashSet<ProdVariant>();
+            this.BespokeOrders = new HashSet<BespokeOrders>();
         }
     
         public int ItemId { get; set; }
@@ -28,8 +28,8 @@ namespace AthenasSpider.Models
         public string Image { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BespokeOrder> BespokeOrders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProdVariant> ProdVariants { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BespokeOrders> BespokeOrders { get; set; }
     }
 }

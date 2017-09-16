@@ -5,6 +5,22 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="AthenasSpiderDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="__RefactorLog">
+          <Key>
+            <PropertyRef Name="OperationKey" />
+          </Key>
+          <Property Name="OperationKey" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -68,6 +84,8 @@
           <Property Name="DueDate" Type="date" Nullable="false" />
           <Property Name="Price" Type="money" />
           <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CustomerImage" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Description" Type="ntext" />
         </EntityType>
         <EntityType Name="Customers">
           <Key>
@@ -94,6 +112,7 @@
           <Property Name="Tax" Type="decimal" Precision="5" Scale="2" />
           <Property Name="Name" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Completed" Type="bit" Nullable="false" />
+          <Property Name="TransactionID" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="ProdOrder">
           <Key>
@@ -315,6 +334,8 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="AthenasSpiderDBModelStoreContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
@@ -393,7 +414,6 @@
           <EntitySet Name="AspNetUserClaims" EntityType="AthenasSpiderDBModel.AspNetUserClaim" />
           <EntitySet Name="AspNetUserLogins" EntityType="AthenasSpiderDBModel.AspNetUserLogin" />
           <EntitySet Name="AspNetUsers" EntityType="AthenasSpiderDBModel.AspNetUser" />
-          <EntitySet Name="BespokeOrders" EntityType="AthenasSpiderDBModel.BespokeOrder" />
           <EntitySet Name="Customers" EntityType="AthenasSpiderDBModel.Customer" />
           <EntitySet Name="Orders" EntityType="AthenasSpiderDBModel.Order" />
           <EntitySet Name="ProdOrders" EntityType="AthenasSpiderDBModel.ProdOrder" />
@@ -411,18 +431,6 @@
           <AssociationSet Name="FK_Customers_AspNetUsers" Association="AthenasSpiderDBModel.FK_Customers_AspNetUsers">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="Customer" EntitySet="Customers" />
-          </AssociationSet>
-          <AssociationSet Name="FK__BespokeOr__ItemI__32E0915F" Association="AthenasSpiderDBModel.FK__BespokeOr__ItemI__32E0915F">
-            <End Role="Product" EntitySet="Products" />
-            <End Role="BespokeOrder" EntitySet="BespokeOrders" />
-          </AssociationSet>
-          <AssociationSet Name="FK__BespokeOrde__CId__30F848ED" Association="AthenasSpiderDBModel.FK__BespokeOrde__CId__30F848ED">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="BespokeOrder" EntitySet="BespokeOrders" />
-          </AssociationSet>
-          <AssociationSet Name="FK__BespokeOrde__OId__31EC6D26" Association="AthenasSpiderDBModel.FK__BespokeOrde__OId__31EC6D26">
-            <End Role="Order" EntitySet="Orders" />
-            <End Role="BespokeOrder" EntitySet="BespokeOrders" />
           </AssociationSet>
           <AssociationSet Name="FK__Orders__CId__3E52440B" Association="AthenasSpiderDBModel.FK__Orders__CId__3E52440B">
             <End Role="Customer" EntitySet="Customers" />
@@ -451,6 +459,21 @@
           <AssociationSet Name="AspNetUserRoles" Association="AthenasSpiderDBModel.AspNetUserRoles">
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <EntitySet Name="C__MigrationHistory" EntityType="AthenasSpiderDBModel.C__MigrationHistory" />
+          <EntitySet Name="C__RefactorLog" EntityType="AthenasSpiderDBModel.C__RefactorLog" />
+          <EntitySet Name="BespokeOrders" EntityType="AthenasSpiderDBModel.BespokeOrders" />
+          <AssociationSet Name="FK__BespokeOr__ItemI__32E0915F" Association="AthenasSpiderDBModel.FK__BespokeOr__ItemI__32E0915F">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="BespokeOrders" EntitySet="BespokeOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BespokeOrde__CId__30F848ED" Association="AthenasSpiderDBModel.FK__BespokeOrde__CId__30F848ED">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="BespokeOrders" EntitySet="BespokeOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BespokeOrde__OId__31EC6D26" Association="AthenasSpiderDBModel.FK__BespokeOrde__OId__31EC6D26">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="BespokeOrders" EntitySet="BespokeOrders" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="AspNetRole">
@@ -503,22 +526,6 @@
           <NavigationProperty Name="Customers" Relationship="AthenasSpiderDBModel.FK_Customers_AspNetUsers" FromRole="AspNetUser" ToRole="Customer" />
           <NavigationProperty Name="AspNetRoles" Relationship="AthenasSpiderDBModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
         </EntityType>
-        <EntityType Name="BespokeOrder">
-          <Key>
-            <PropertyRef Name="BespokeId" />
-          </Key>
-          <Property Name="BespokeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CId" Type="Int32" Nullable="false" />
-          <Property Name="OId" Type="Int32" />
-          <Property Name="ItemId" Type="Int32" />
-          <Property Name="VarId" Type="Int32" />
-          <Property Name="DueDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Product" Relationship="AthenasSpiderDBModel.FK__BespokeOr__ItemI__32E0915F" FromRole="BespokeOrder" ToRole="Product" />
-          <NavigationProperty Name="Customer" Relationship="AthenasSpiderDBModel.FK__BespokeOrde__CId__30F848ED" FromRole="BespokeOrder" ToRole="Customer" />
-          <NavigationProperty Name="Order" Relationship="AthenasSpiderDBModel.FK__BespokeOrde__OId__31EC6D26" FromRole="BespokeOrder" ToRole="Order" />
-        </EntityType>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="CID" />
@@ -529,9 +536,9 @@
           <Property Name="AspNetUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="YearOfBirth" Type="Int32" />
           <NavigationProperty Name="AspNetUser" Relationship="AthenasSpiderDBModel.FK_Customers_AspNetUsers" FromRole="Customer" ToRole="AspNetUser" />
-          <NavigationProperty Name="BespokeOrders" Relationship="AthenasSpiderDBModel.FK__BespokeOrde__CId__30F848ED" FromRole="Customer" ToRole="BespokeOrder" />
           <NavigationProperty Name="Orders" Relationship="AthenasSpiderDBModel.FK__Orders__CId__3E52440B" FromRole="Customer" ToRole="Order" />
           <NavigationProperty Name="Shipments" Relationship="AthenasSpiderDBModel.FK__Shipments__CId__38996AB5" FromRole="Customer" ToRole="Shipment" />
+          <NavigationProperty Name="BespokeOrders" Relationship="AthenasSpiderDBModel.FK__BespokeOrde__CId__30F848ED" FromRole="Customer" ToRole="BespokeOrders" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -548,10 +555,11 @@
           <Property Name="Tax" Type="Decimal" Precision="5" Scale="2" />
           <Property Name="Name" Type="Guid" Nullable="false" />
           <Property Name="Completed" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="BespokeOrders" Relationship="AthenasSpiderDBModel.FK__BespokeOrde__OId__31EC6D26" FromRole="Order" ToRole="BespokeOrder" />
+          <Property Name="TransactionID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Customer" Relationship="AthenasSpiderDBModel.FK__Orders__CId__3E52440B" FromRole="Order" ToRole="Customer" />
           <NavigationProperty Name="ProdOrders" Relationship="AthenasSpiderDBModel.FK__ProdOrder__OId__5EBF139D" FromRole="Order" ToRole="ProdOrder" />
           <NavigationProperty Name="Shipments" Relationship="AthenasSpiderDBModel.FK__Shipments__OId__398D8EEE" FromRole="Order" ToRole="Shipment" />
+          <NavigationProperty Name="BespokeOrders" Relationship="AthenasSpiderDBModel.FK__BespokeOrde__OId__31EC6D26" FromRole="Order" ToRole="BespokeOrders" />
         </EntityType>
         <EntityType Name="ProdOrder">
           <Key>
@@ -573,8 +581,8 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="Image" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="BespokeOrders" Relationship="AthenasSpiderDBModel.FK__BespokeOr__ItemI__32E0915F" FromRole="Product" ToRole="BespokeOrder" />
           <NavigationProperty Name="ProdVariants" Relationship="AthenasSpiderDBModel.FK__ProdVaria__ItemI__37A5467C" FromRole="Product" ToRole="ProdVariant" />
+          <NavigationProperty Name="BespokeOrders" Relationship="AthenasSpiderDBModel.FK__BespokeOr__ItemI__32E0915F" FromRole="Product" ToRole="BespokeOrders" />
         </EntityType>
         <EntityType Name="ProdVariant">
           <Key>
@@ -641,42 +649,6 @@
             </Principal>
             <Dependent Role="Customer">
               <PropertyRef Name="AspNetUserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__BespokeOr__ItemI__32E0915F">
-          <End Type="AthenasSpiderDBModel.Product" Role="Product" Multiplicity="0..1" />
-          <End Type="AthenasSpiderDBModel.BespokeOrder" Role="BespokeOrder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Product">
-              <PropertyRef Name="ItemId" />
-            </Principal>
-            <Dependent Role="BespokeOrder">
-              <PropertyRef Name="ItemId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__BespokeOrde__CId__30F848ED">
-          <End Type="AthenasSpiderDBModel.Customer" Role="Customer" Multiplicity="1" />
-          <End Type="AthenasSpiderDBModel.BespokeOrder" Role="BespokeOrder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Customer">
-              <PropertyRef Name="CID" />
-            </Principal>
-            <Dependent Role="BespokeOrder">
-              <PropertyRef Name="CId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__BespokeOrde__OId__31EC6D26">
-          <End Type="AthenasSpiderDBModel.Order" Role="Order" Multiplicity="0..1" />
-          <End Type="AthenasSpiderDBModel.BespokeOrder" Role="BespokeOrder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order">
-              <PropertyRef Name="OId" />
-            </Principal>
-            <Dependent Role="BespokeOrder">
-              <PropertyRef Name="OId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -756,6 +728,76 @@
           <End Type="AthenasSpiderDBModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
           <End Type="AthenasSpiderDBModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
         </Association>
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="C__RefactorLog">
+          <Key>
+            <PropertyRef Name="OperationKey" />
+          </Key>
+          <Property Name="OperationKey" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BespokeOrders">
+          <Key>
+            <PropertyRef Name="BespokeId" />
+          </Key>
+          <Property Name="BespokeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CId" Type="Int32" Nullable="false" />
+          <Property Name="OId" Type="Int32" />
+          <Property Name="ItemId" Type="Int32" />
+          <Property Name="VarId" Type="Int32" />
+          <Property Name="DueDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerImage" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Products" Relationship="AthenasSpiderDBModel.FK__BespokeOr__ItemI__32E0915F" FromRole="BespokeOrders" ToRole="Product" />
+          <NavigationProperty Name="Customers" Relationship="AthenasSpiderDBModel.FK__BespokeOrde__CId__30F848ED" FromRole="BespokeOrders" ToRole="Customer" />
+          <NavigationProperty Name="Orders" Relationship="AthenasSpiderDBModel.FK__BespokeOrde__OId__31EC6D26" FromRole="BespokeOrders" ToRole="Order" />
+        </EntityType>
+        <Association Name="FK__BespokeOr__ItemI__32E0915F">
+          <End Type="AthenasSpiderDBModel.Product" Role="Product" Multiplicity="0..1" />
+          <End Type="AthenasSpiderDBModel.BespokeOrders" Role="BespokeOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="BespokeOrders">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BespokeOrde__CId__30F848ED">
+          <End Type="AthenasSpiderDBModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="AthenasSpiderDBModel.BespokeOrders" Role="BespokeOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CID" />
+            </Principal>
+            <Dependent Role="BespokeOrders">
+              <PropertyRef Name="CId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BespokeOrde__OId__31EC6D26">
+          <End Type="AthenasSpiderDBModel.Order" Role="Order" Multiplicity="0..1" />
+          <End Type="AthenasSpiderDBModel.BespokeOrders" Role="BespokeOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="OId" />
+            </Principal>
+            <Dependent Role="BespokeOrders">
+              <PropertyRef Name="OId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -807,20 +849,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="BespokeOrders">
-            <EntityTypeMapping TypeName="AthenasSpiderDBModel.BespokeOrder">
-              <MappingFragment StoreEntitySet="BespokeOrders">
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
-                <ScalarProperty Name="VarId" ColumnName="VarId" />
-                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
-                <ScalarProperty Name="OId" ColumnName="OId" />
-                <ScalarProperty Name="CId" ColumnName="CId" />
-                <ScalarProperty Name="BespokeId" ColumnName="BespokeId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="AthenasSpiderDBModel.Customer">
               <MappingFragment StoreEntitySet="Customers">
@@ -835,6 +863,7 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="AthenasSpiderDBModel.Order">
               <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
                 <ScalarProperty Name="Completed" ColumnName="Completed" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Tax" ColumnName="Tax" />
@@ -903,6 +932,39 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="AthenasSpiderDBModel.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="C__RefactorLog">
+            <EntityTypeMapping TypeName="AthenasSpiderDBModel.C__RefactorLog">
+              <MappingFragment StoreEntitySet="__RefactorLog">
+                <ScalarProperty Name="OperationKey" ColumnName="OperationKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BespokeOrders">
+            <EntityTypeMapping TypeName="AthenasSpiderDBModel.BespokeOrders">
+              <MappingFragment StoreEntitySet="BespokeOrders">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CustomerImage" ColumnName="CustomerImage" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="VarId" ColumnName="VarId" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="OId" ColumnName="OId" />
+                <ScalarProperty Name="CId" ColumnName="CId" />
+                <ScalarProperty Name="BespokeId" ColumnName="BespokeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -917,7 +979,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

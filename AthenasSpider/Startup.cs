@@ -26,7 +26,7 @@ namespace AthenasSpider
 
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
 
-                LoginPath = new Microsoft.Owin.PathString("/Account/LogOn")
+                LoginPath = new Microsoft.Owin.PathString("/Account/SignIn")
 
             });
 
@@ -65,7 +65,7 @@ namespace AthenasSpider
 
 
 
-
+                manager.EmailService = new SendGridEmailService();
                 return manager;
 
             });

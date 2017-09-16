@@ -17,9 +17,9 @@ namespace AthenasSpider.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Order()
         {
-            this.BespokeOrders = new HashSet<BespokeOrder>();
             this.ProdOrders = new HashSet<ProdOrder>();
             this.Shipments = new HashSet<Shipment>();
+            this.BespokeOrders = new HashSet<BespokeOrders>();
         }
     
         public int OId { get; set; }
@@ -33,13 +33,14 @@ namespace AthenasSpider.Models
         public Nullable<decimal> Tax { get; set; }
         public System.Guid Name { get; set; }
         public bool Completed { get; set; }
+        public string TransactionID { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BespokeOrder> BespokeOrders { get; set; }
         public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProdOrder> ProdOrders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Shipment> Shipments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BespokeOrders> BespokeOrders { get; set; }
     }
 }

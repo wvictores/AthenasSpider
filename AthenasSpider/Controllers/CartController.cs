@@ -27,7 +27,7 @@ namespace AthenasSpider.Controllers
                 var order = db.Orders.Single(x => x.Name == orderName);
 
                 var prodOrders = order.ProdOrders;
-                return View(prodOrders.ToList());
+                return View(prodOrders);
             }
             return RedirectToAction("Index", "Home");
         }
